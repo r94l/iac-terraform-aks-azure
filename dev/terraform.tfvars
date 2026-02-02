@@ -1,0 +1,6 @@
+rgname                 = "dev-kr-rg"
+service_principal_name = "dev-kr-spn"
+keyvault_name          = "dev-kr-kv-101"
+SUB_ID = "your-subscription-id-here"
+cluster_name = "dev-kr-cluster"
+node_pool_name = "devnp"
