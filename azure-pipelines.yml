@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: tf_validate
     pool:
-      name: "AWS VM"
+      name: "KR_Pool"
     steps:
     - checkout: self
     - task: TerraformInstaller@1
@@ -40,7 +40,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'validate'
-        workingDirectory: '$(Build.SourcesDirectory)/AZTerraform/dev'
+        workingDirectory: '$(Build.SourcesDirectory)/dev'
 
 - stage: dev_deploy
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
