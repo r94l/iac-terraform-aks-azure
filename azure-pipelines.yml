@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: tf_validate
     pool:
-      name: KR_Pool
+      name: "AWS VM"
     steps:
     - task: TerraformInstaller@1
       inputs:
@@ -45,7 +45,7 @@ stages:
   jobs:
   - job: terraform_apply_dev
     pool:
-      name: KR_Pool
+      name: "AWS VM"
     steps:
     - task: TerraformInstaller@1
       inputs:
@@ -74,7 +74,7 @@ stages:
   jobs:
   - job: terraform_apply_stage
     pool:
-      name: KR_Pool
+      name: "AWS VM"
     steps:
     - task: TerraformInstaller@1
       inputs:
