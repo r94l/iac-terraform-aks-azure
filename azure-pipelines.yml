@@ -29,7 +29,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(Build.SourcesDirectory)/AZTerraform/dev'
+        workingDirectory: '$(Build.SourcesDirectory)/dev'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
         backendAzureRmResourceGroupName: 'terraform-state-rg'
