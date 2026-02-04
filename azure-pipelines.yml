@@ -40,7 +40,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'validate'
-        workingDirectory: '$(System.DefaultWorkingDirectory))/dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
 
 - stage: dev_deploy
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
