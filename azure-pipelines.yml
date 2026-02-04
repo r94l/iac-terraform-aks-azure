@@ -18,16 +18,18 @@ stages:
   jobs:
   - job: tf_validate
     pool:
-      name: "AWS VM"
+      name: "KR_Pool"
     steps:
+    - checkout: self
     - task: TerraformInstaller@1
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.7.5'
+    
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
         backendAzureRmResourceGroupName: 'terraform-state-rg'
@@ -38,23 +40,24 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'validate'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
 
 - stage: dev_deploy
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   jobs:
   - job: terraform_apply_dev
     pool:
-      name: "AWS VM"
+      name: "KR_Pool"
     steps:
+    - checkout: self
     - task: TerraformInstaller@1
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.7.5'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
         backendAzureRmResourceGroupName: 'terraform-state-rg'
@@ -65,7 +68,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
         commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
 
@@ -74,17 +77,18 @@ stages:
   jobs:
   - job: terraform_apply_stage
     pool:
-      name: "AWS VM"
+      name: "KR_Pool"
     steps:
+    - checkout: self
     - task: TerraformInstaller@1
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.7.5'
 
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/staging'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/staging'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
         backendAzureRmResourceGroupName: 'terraform-state-rg'
@@ -95,7 +99,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/AZTerraform/staging'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/staging'
         commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
     
