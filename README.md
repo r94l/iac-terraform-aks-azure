@@ -1,4 +1,4 @@
-# 🚀 AKS Deployment with Terraform & Azure DevOps
+# AKS Deployment with Terraform & Azure DevOps
 
 > **Enterprise-grade Infrastructure as Code for Azure Kubernetes Service**  
 > A reference implementation demonstrating realistic IaC patterns, secure identity management, and pipeline-driven infrastructure provisioning.
