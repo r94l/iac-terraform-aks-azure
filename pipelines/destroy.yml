@@ -1,0 +1,69 @@
+trigger: none
+
+parameters:
+ - name: environment
+   type: string
+   values:
+    - dev
+    - stage
+   default: dev
+
+stages:
+- stage: plan_destroy_dev
+  jobs:
+  - job: plan_destroy
+    pool:
+      name: "KR_Pool"
+    steps:
+    - checkout: self
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: '1.7.5'
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.environment }}'
+        backendAzureRmUseEntraIdForAuthentication: false
+        backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
+        backendAzureRmResourceGroupName: 'terraform-state-rg'
+        backendAzureRmStorageAccountName: 'tf${{ parameters.environment }}backend2026kr'
+        backendAzureRmContainerName: 'tfstatekr'
+        backendAzureRmKey: '${{ parameters.environment }}.terraform.tfstate'
+
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.environment }}'
+        environmentServiceNameAzureRM: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
+
+- stage: destroy_env
+  jobs:
+  - job: destroy
+    pool:
+      name: "KR_Pool"
+    steps:
+    - checkout: self
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: '1.7.5'
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.environment }}'
+        backendAzureRmUseEntraIdForAuthentication: false
+        backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
+        backendAzureRmResourceGroupName: 'terraform-state-rg'
+        backendAzureRmStorageAccountName: 'tf${{ parameters.environment }}backend2026kr'
+        backendAzureRmContainerName: 'tfstatekr'
+        backendAzureRmKey: '${{ parameters.environment }}.terraform.tfstate' 
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.environment }}'
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
