@@ -88,7 +88,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/staging'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/stage'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
         backendAzureRmResourceGroupName: 'terraform-state-rg'
@@ -99,7 +99,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/staging'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/stage'
         commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: 'Kr-Test-Sub(7653a001-c28d-4ce2-9ec3-c6cdd6a7f98f)'
     
