@@ -1,0 +1,6 @@
+rgname                 = "stage-kr-rg"
+service_principal_name = "stage-kr-spn"
+keyvault_name          = "stage-kr-kv-101"
+SUB_ID = ""
+cluster_name = "stage-kr-cluster"
+node_pool_name = "stagenp"
